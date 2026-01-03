@@ -4,7 +4,7 @@ export const DOMAINS: Record<string, DomainConfig> = {
   bny: {
     id: 'bny',
     name: 'BNY',
-    logo: '🏦',
+    logo: '/logo/bny.png',
     description: 'Financial services, asset management, and complex portfolio queries.',
     slaThresholds: {
       urgent: 4, // 4 hours for critical issues like trade failures
@@ -12,25 +12,29 @@ export const DOMAINS: Record<string, DomainConfig> = {
     },
     riskKeywords: {
       critical: [
-        'fraud', 'unauthorized', 'compliance breach', 'lawsuit', 'breach', 'lost money', 
-        'emergency', 'sec investigation', 'money laundering', 'sanctions', 'insider trading', 
-        'identity theft', 'hacked', 'fiduciary failure', 'regulatory inquiry'
+        'fraud', 'unauthorized', 'compliance breach', 'lawsuit', 'breach', 'lost money',
+        'emergency', 'sec investigation', 'money laundering', 'sanctions', 'insider trading',
+        'identity theft', 'hacked', 'fiduciary failure', 'regulatory inquiry', 'embezzlement',
+        'asset seizure', 'subpoena', 'terrorist financing', 'whistle blower', 'market manipulation'
       ],
       high: [
-        'fail', 'error', 'urgent', 'stuck', 'immediately', 'penalty', 'escalate', 
-        'margin call', 'trade failure', 'wire missing', 'incorrect balance', 'double charge', 
-        'cannot withdraw', 'account frozen', 'system outage'
+        'fail', 'error', 'urgent', 'stuck', 'immediately', 'penalty', 'escalate',
+        'margin call', 'trade failure', 'wire missing', 'incorrect balance', 'double charge',
+        'cannot withdraw', 'account frozen', 'system outage', 'liquidity crisis', 'settlement failure',
+        'overdraft', 'credit default', 'unauthorized trade', 'collateral shortage'
       ],
       medium: [
-        'delay', 'slow', 'confused', 'access', 'login', 'reset', 'password', 
-        'fees', 'statement', 'clarification', 'not working', 'app crash'
+        'delay', 'slow', 'confused', 'access', 'login', 'reset', 'password',
+        'fees', 'statement', 'clarification', 'not working', 'app crash',
+        'dividend missing', 'tax document', 'beneficiary update', 'interest rate',
+        'transaction limit', 'routing number'
       ],
     },
   },
   zepto: {
     id: 'zepto',
     name: 'Zepto',
-    logo: '⚡',
+    logo: '/logo/zepto.png',
     description: '10-minute grocery delivery, order fulfillment, and logistics.',
     slaThresholds: {
       urgent: 0.25, // 15 mins (if order is late, it's urgent)
@@ -38,17 +42,17 @@ export const DOMAINS: Record<string, DomainConfig> = {
     },
     riskKeywords: {
       critical: [
-        'spoiled', 'allergy', 'sick', 'unsafe', 'accident', 'food poisoning', 'scam', 
-        'sexual harassment', 'threatened', 'stalking', 'severe injury', 'hospital', 
+        'spoiled', 'allergy', 'sick', 'unsafe', 'accident', 'food poisoning', 'scam',
+        'sexual harassment', 'threatened', 'stalking', 'severe injury', 'hospital',
         'expired product', 'foreign object', 'contamination'
       ],
       high: [
-        'late', 'missing', 'cold', 'wrong item', 'refund', 'cancel', 'driver', 'never arrived', 
-        'spilled', 'damaged', 'rude', 'unprofessional', 'vehicle breakdown', 'payment failed', 
+        'late', 'missing', 'cold', 'wrong item', 'refund', 'cancel', 'driver', 'never arrived',
+        'spilled', 'damaged', 'rude', 'unprofessional', 'vehicle breakdown', 'payment failed',
         'charged twice'
       ],
       medium: [
-        'status', 'where', 'promo', 'coupon', 'bag', 'item missing', 'change address', 
+        'status', 'where', 'promo', 'coupon', 'bag', 'item missing', 'change address',
         'add item', 'phone number', 'contact support', 'eta'
       ],
     },

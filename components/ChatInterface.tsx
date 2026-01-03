@@ -11,7 +11,7 @@ interface ChatInterfaceProps {
 }
 
 // Queries tailored for initial prompt based on domain
-const STARTER_QUERIES: Record<string, {text: string, label: string}[]> = {
+const STARTER_QUERIES: Record<string, { text: string, label: string }[]> = {
   bny: [
     { text: "Status of wire transfer TXN-88291?", label: "Track Transfer" },
     { text: "My compliance alert regarding Singapore login?", label: "Security Alert" },
@@ -50,20 +50,20 @@ const AgentStepItem = ({ step, isLast }: { step: ProcessingStep; isLast: boolean
       {!isLast && (
         <div className="absolute left-[15px] top-8 bottom-[-16px] w-[2px] bg-slate-100 z-0"></div>
       )}
-      
+
       {/* Icon Node */}
       <div className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center border shadow-sm transition-all duration-300 ${getColor()} ${step.status === 'pending' ? 'animate-pulse' : ''}`}>
         {step.status === 'pending' ? (
           <Loader2 size={14} className="animate-spin" />
         ) : (
           <div className="relative flex items-center justify-center w-full h-full animate-fadeIn">
-             {getIcon()}
-             {/* Success Tick Badge */}
-             {step.status === 'success' && (
-               <div className="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-[2px] border-2 border-white animate-scaleIn">
-                 <Check size={6} className="text-white stroke-[4]" />
-               </div>
-             )}
+            {getIcon()}
+            {/* Success Tick Badge */}
+            {step.status === 'success' && (
+              <div className="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-[2px] border-2 border-white animate-scaleIn">
+                <Check size={6} className="text-white stroke-[4]" />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -78,9 +78,9 @@ const AgentStepItem = ({ step, isLast }: { step: ProcessingStep; isLast: boolean
         </div>
         <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{step.message}</p>
         {step.details && (
-             <div className="mt-1.5 p-2 bg-slate-50 rounded text-[10px] text-slate-500 font-mono border border-slate-100">
-               {step.details}
-             </div>
+          <div className="mt-1.5 p-2 bg-slate-50 rounded text-[10px] text-slate-500 font-mono border border-slate-100">
+            {step.details}
+          </div>
         )}
       </div>
     </div>
@@ -109,7 +109,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
   const handleSubmit = async (e?: React.FormEvent, overrideText?: string) => {
     if (e) e.preventDefault();
     const textToSend = overrideText || input;
-    
+
     if (!textToSend.trim() || isProcessing) return;
 
     const userMsg: ChatMessage = {
@@ -131,12 +131,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
     try {
       const result = await processUserRequest(
         userMsg.content,
-        messages, 
+        messages,
         currentDomain,
         (step) => {
           // Check if we already have a step for this agent
           const existingIndex = localSteps.findIndex(s => s.agent === step.agent);
-          
+
           if (existingIndex !== -1) {
             // Update existing step
             localSteps[existingIndex] = step;
@@ -144,7 +144,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
             // Add new step
             localSteps.push(step);
           }
-          
+
           // Update State with a new array reference
           setCurrentSteps([...localSteps]);
           scrollToBottom();
@@ -160,7 +160,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
         metadata: result.metadata,
         suggestedActions: result.suggestedActions
       };
-      
+
       onNewMessage(botMsg);
       setIsProcessing(false);
       setCurrentSteps([]); // Clear visualizer
@@ -176,102 +176,101 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
 
   return (
     <div className="flex flex-col h-full bg-white relative overflow-hidden font-sans rounded-r-3xl">
-      
+
       {/* Header */}
       <div className="px-8 py-5 border-b border-slate-100 bg-white/80 backdrop-blur-md z-20 flex justify-between items-center sticky top-0">
         <div className="flex items-center gap-4">
-           <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm border border-slate-100 ${currentDomain === 'zepto' ? 'bg-purple-50' : 'bg-slate-50'}`}>
-             {currentDomain === 'zepto' ? <Zap className="text-purple-600 fill-current" size={24} /> : <Landmark className="text-slate-800" size={24} />}
-           </div>
-           <div>
-             <h2 className="text-base font-bold text-slate-900 tracking-tight">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center p-3 shadow-sm border border-slate-100 bg-white">
+            <img src={domain.logo} alt={domain.name} className="w-full h-full object-contain" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-slate-900 tracking-tight">
               {domain.name}
-             </h2>
-             <div className="flex items-center gap-2">
-               <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-               <p className="text-xs font-medium text-slate-500">Titan Agent Active</p>
-             </div>
-           </div>
+            </h2>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <p className="text-xs font-medium text-slate-500">Titan Agent Active</p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 md:p-12 space-y-10 z-10 scroll-smooth">
         {messages.length === 0 && (
-            <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
-                <div className="w-20 h-20 bg-gradient-to-tr from-slate-100 to-white rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-slate-200/50 border border-slate-100">
-                    <Sparkles className="text-titan-gold" size={40} />
-                </div>
-                <h3 className="text-2xl font-serif font-medium text-slate-900 mb-3">Welcome, Alex.</h3>
-                <p className="text-slate-500 text-sm max-w-md text-center mb-10 leading-relaxed">
-                    I am Titan, your {domain.name} intelligent assistant. <br/>
-                    I can help with transactions, orders, and priority support.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full px-4">
-                  {starters.map((q, idx) => (
-                    <button 
-                      key={idx}
-                      onClick={() => handleSubmit(undefined, q.text)}
-                      className="text-left p-5 bg-white hover:bg-slate-50 border border-slate-100 hover:border-slate-300 rounded-2xl transition-all duration-300 group shadow-sm hover:shadow-md"
-                    >
-                      <span className="text-xs font-bold text-titan-gold mb-2 block uppercase tracking-wider">{q.label}</span>
-                      <p className="text-sm font-medium text-slate-700 group-hover:text-slate-900 line-clamp-2">{q.text}</p>
-                    </button>
-                  ))}
-                </div>
+          <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
+            <div className="w-20 h-20 bg-gradient-to-tr from-slate-100 to-white rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-slate-200/50 border border-slate-100">
+              <Sparkles className="text-titan-gold" size={40} />
             </div>
+            <h3 className="text-2xl font-serif font-medium text-slate-900 mb-3">Welcome, Alex.</h3>
+            <p className="text-slate-500 text-sm max-w-md text-center mb-10 leading-relaxed">
+              I am Titan, your {domain.name} intelligent assistant. <br />
+              I can help with transactions, orders, and priority support.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full px-4">
+              {starters.map((q, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSubmit(undefined, q.text)}
+                  className="text-left p-5 bg-white hover:bg-slate-50 border border-slate-100 hover:border-slate-300 rounded-2xl transition-all duration-300 group shadow-sm hover:shadow-md"
+                >
+                  <span className="text-xs font-bold text-titan-gold mb-2 block uppercase tracking-wider">{q.label}</span>
+                  <p className="text-sm font-medium text-slate-700 group-hover:text-slate-900 line-clamp-2">{q.text}</p>
+                </button>
+              ))}
+            </div>
+          </div>
         )}
 
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} group animate-fadeIn`}>
             <div className={`flex gap-4 max-w-[95%] md:max-w-[80%] ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-              
+
               {/* Message Bubble */}
-              <div className={`p-5 rounded-3xl text-sm leading-relaxed shadow-sm transition-all ${
-                msg.role === 'user' 
-                  ? 'bg-slate-900 text-white rounded-tr-sm' 
-                  : 'bg-white border border-slate-100 text-slate-700 rounded-tl-sm shadow-md shadow-slate-100'
-              }`}>
+              <div className={`p-5 rounded-3xl text-sm leading-relaxed shadow-sm transition-all ${msg.role === 'user'
+                ? 'bg-slate-900 text-white rounded-tr-sm'
+                : 'bg-white border border-slate-100 text-slate-700 rounded-tl-sm shadow-md shadow-slate-100'
+                }`}>
                 {msg.content}
 
                 {/* Structured Validation Flag */}
                 {msg.role === 'model' && msg.metadata?.validationPassed === false && (
-                    <div className="mt-3 flex items-center gap-2 p-2 rounded-lg bg-red-50 border border-red-100 text-red-600 w-fit">
-                        <AlertOctagon size={14} />
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-bold uppercase tracking-wider">Flagged for Review</span>
-                            <span className="text-[10px] opacity-80 leading-tight">{msg.metadata.validationReason || "Quality check failed"}</span>
-                        </div>
+                  <div className="mt-3 flex items-center gap-2 p-2 rounded-lg bg-red-50 border border-red-100 text-red-600 w-fit">
+                    <AlertOctagon size={14} />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-bold uppercase tracking-wider">Flagged for Review</span>
+                      <span className="text-[10px] opacity-80 leading-tight">{msg.metadata.validationReason || "Quality check failed"}</span>
                     </div>
+                  </div>
                 )}
 
                 {/* Agent Trace (Collapsed by default for history) */}
                 {msg.role === 'model' && msg.processingSteps && msg.processingSteps.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-slate-100/50">
-                        <button 
-                            onClick={() => toggleTrace(msg.id)}
-                            className="flex items-center gap-2 text-[10px] uppercase font-bold text-slate-400 hover:text-titan-gold transition-colors"
-                        >
-                            {expandedTraceId === msg.id ? <ChevronUp size={12}/> : <ChevronDown size={12}/>}
-                            {expandedTraceId === msg.id ? "Hide Agent Trace" : "View Agent Decision Flow"}
-                        </button>
-                        
-                        {expandedTraceId === msg.id && (
-                             <div className="mt-4 space-y-4 animate-fadeIn">
-                                {msg.processingSteps.map((step, idx) => (
-                                    <AgentStepItem 
-                                        key={idx} 
-                                        step={step} 
-                                        isLast={idx === msg.processingSteps!.length - 1} 
-                                    />
-                                ))}
-                             </div>
-                        )}
-                    </div>
+                  <div className="mt-4 pt-4 border-t border-slate-100/50">
+                    <button
+                      onClick={() => toggleTrace(msg.id)}
+                      className="flex items-center gap-2 text-[10px] uppercase font-bold text-slate-400 hover:text-titan-gold transition-colors"
+                    >
+                      {expandedTraceId === msg.id ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                      {expandedTraceId === msg.id ? "Hide Agent Trace" : "View Agent Decision Flow"}
+                    </button>
+
+                    {expandedTraceId === msg.id && (
+                      <div className="mt-4 space-y-4 animate-fadeIn">
+                        {msg.processingSteps.map((step, idx) => (
+                          <AgentStepItem
+                            key={idx}
+                            step={step}
+                            isLast={idx === msg.processingSteps!.length - 1}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -296,30 +295,30 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
 
         {/* Live Processing Indicator */}
         {isProcessing && (
-           <div className="flex justify-start animate-fadeIn w-full">
-              <div className="max-w-[80%] bg-white border border-slate-100 rounded-3xl rounded-tl-sm p-6 shadow-md shadow-slate-100/50">
-                 <div className="flex items-center gap-2 mb-6">
-                    <Loader2 size={16} className="animate-spin text-titan-gold" />
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                       Processing Agent Flow
-                    </span>
-                 </div>
-                 
-                 <div className="space-y-4">
-                    {currentSteps.length === 0 ? (
-                        <div className="text-xs text-slate-400 italic pl-2">Initializing agents...</div>
-                    ) : (
-                        currentSteps.map((step, idx) => (
-                            <AgentStepItem 
-                                key={idx} 
-                                step={step} 
-                                isLast={idx === currentSteps.length - 1} 
-                            />
-                        ))
-                    )}
-                 </div>
+          <div className="flex justify-start animate-fadeIn w-full">
+            <div className="max-w-[80%] bg-white border border-slate-100 rounded-3xl rounded-tl-sm p-6 shadow-md shadow-slate-100/50">
+              <div className="flex items-center gap-2 mb-6">
+                <Loader2 size={16} className="animate-spin text-titan-gold" />
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                  Processing Agent Flow
+                </span>
               </div>
-           </div>
+
+              <div className="space-y-4">
+                {currentSteps.length === 0 ? (
+                  <div className="text-xs text-slate-400 italic pl-2">Initializing agents...</div>
+                ) : (
+                  currentSteps.map((step, idx) => (
+                    <AgentStepItem
+                      key={idx}
+                      step={step}
+                      isLast={idx === currentSteps.length - 1}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
         )}
         <div ref={messagesEndRef} />
       </div>
@@ -328,26 +327,26 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ currentDomain, onN
       <div className="p-6 md:p-8 bg-white z-20">
         <div className="max-w-4xl mx-auto relative">
           <form onSubmit={(e) => handleSubmit(e)} className="relative flex gap-4 items-center group">
-              <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask Titan anything..."
-                  disabled={isProcessing}
-                  className="w-full bg-slate-50 border-none rounded-2xl px-6 py-5 pl-6 pr-16 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all shadow-inner"
-              />
-              <button 
-                  type="submit" 
-                  disabled={!input.trim() || isProcessing}
-                  className="absolute right-3 top-3 bottom-3 aspect-square bg-slate-900 hover:bg-black text-white rounded-xl flex items-center justify-center transition-all disabled:opacity-0 disabled:scale-75 shadow-lg shadow-slate-900/20 active:scale-90"
-              >
-                  <ArrowRight size={20} />
-              </button>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask Titan anything..."
+              disabled={isProcessing}
+              className="w-full bg-slate-50 border-none rounded-2xl px-6 py-5 pl-6 pr-16 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-100 focus:bg-white transition-all shadow-inner"
+            />
+            <button
+              type="submit"
+              disabled={!input.trim() || isProcessing}
+              className="absolute right-3 top-3 bottom-3 aspect-square bg-slate-900 hover:bg-black text-white rounded-xl flex items-center justify-center transition-all disabled:opacity-0 disabled:scale-75 shadow-lg shadow-slate-900/20 active:scale-90"
+            >
+              <ArrowRight size={20} />
+            </button>
           </form>
           <div className="text-center mt-4 flex items-center justify-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
             <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
-               Titan Powered • BNY Enterprise Security
+              Titan Powered • BNY Enterprise Security
             </p>
           </div>
         </div>
