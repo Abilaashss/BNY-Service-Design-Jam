@@ -1,0 +1,5 @@
+{
+  "name": "Resilient Agentic Service Bot",
+  "description": "A multi-agent client service system featuring Intent Analysis, Proactive SLA Monitoring, and Risk Scoring with a real-time executive dashboard.",
+  "requestFramePermissions": []
+}
