@@ -7,8 +7,8 @@ export const DOMAINS: Record<string, DomainConfig> = {
     logo: '/logo/bny.png',
     description: 'Financial services, asset management, and complex portfolio queries.',
     slaThresholds: {
-      urgent: 4, // 4 hours for critical issues like trade failures
-      standard: 24, // 24 hours for general queries
+      urgent: 4, 
+      standard: 24,
     },
     riskKeywords: {
       critical: [
@@ -37,8 +37,8 @@ export const DOMAINS: Record<string, DomainConfig> = {
     logo: '/logo/zepto.png',
     description: '10-minute grocery delivery, order fulfillment, and logistics.',
     slaThresholds: {
-      urgent: 0.25, // 15 mins (if order is late, it's urgent)
-      standard: 1, // 1 hour for refunds/general
+      urgent: 0.25, 
+      standard: 1, 
     },
     riskKeywords: {
       critical: [
